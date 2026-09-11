@@ -1,6 +1,7 @@
 """OpenClaw-RL's candidate evaluation: a style probe under a regression gate.
 
-Reef's default selector is ``AlwaysSelect``, which publishes every trained step.
+Reef's default plugin is ``BackendAlwaysSelectPlugin``, which publishes every
+trained step.
 That is what lets OpenClaw-RL's stream keep its post-adaptation collapse: a few
 steps past adaptation the policy stops answering and loops on its tools, and
 because every step reaches serving the drift compounds instead of rolling back
@@ -40,7 +41,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
-from reef.train.evaluation import CandidateEvaluationPlugin, EvaluationResult, RegressionGateMixin, UpdateCandidate
+from reef.train.evaluation import EvaluationResult, RegressionGateMixin, UpdateCandidate
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +121,7 @@ def _load_criterion() -> Any:
     return module.student_violations
 
 
-class OpenClawRLCandidateEvaluationPlugin(RegressionGateMixin, CandidateEvaluationPlugin):
+class OpenClawRLCandidateEvaluationPlugin(RegressionGateMixin):
     """The whole OpenClaw-RL candidate evaluation in one class.
 
     ``evaluate`` is the OpenClaw-RL-specific probe — a pinned GSM8K set scored
